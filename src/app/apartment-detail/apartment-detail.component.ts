@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Apartment } from '../apartment';
 import { ApartmentDataService } from "../apartment-data/apartment-data.service"
+import { User } from '../user';
+import { SessionDataService } from '../session-data/session-data.service';
 
 @Component({
   selector: 'app-apartment-detail',
@@ -13,10 +15,18 @@ export class ApartmentDetailComponent implements OnInit {
   apartment: Apartment;
   error:string;
   message: String;
+  currentUser = new User();
 
-  constructor(private data:ApartmentDataService) { }
+  constructor(private data:ApartmentDataService, private service: SessionDataService) { }
 
-  activateListing(){
+  getcurrentUser(){
+    return this.currentUser = this.service.getCurrentUser();
+  }
+  get userIsOwner(){
+    return this.getcurrentUser() && this.getcurrentUser().id === this.apartment.user_id;
+  }
+
+  activateListing(apartment: Apartment){
     this.data.activate(this.apartment).subscribe(
       apartments => {
         this.apartment.is_active = true;
@@ -26,7 +36,7 @@ export class ApartmentDetailComponent implements OnInit {
 
   }
 
-  deactivateListing(){
+  deactivateListing(apartment: Apartment){
     this.data.deactivate(this.apartment).subscribe(
       apartments => {
         this.apartment.is_active = false;

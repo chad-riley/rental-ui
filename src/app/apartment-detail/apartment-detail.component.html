@@ -14,11 +14,11 @@
 </ul>
 
 <form (submit)="activateListing()">
-  <button *ngIf="!apartment.is_active">Activate listing</button>
+  <button *ngIf="!apartment.is_active && userIsOwner">Activate listing</button>
   </form>
 
   <form (submit)="deactivateListing()">
-  <button *ngIf="apartment.is_active">Deactivate listing</button>
+  <button *ngIf="apartment.is_active && userIsOwner">Deactivate listing</button>
   </form>
 
   <form (submit)="likeListing()">

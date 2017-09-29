@@ -20,6 +20,10 @@ export class SessionDataService {
     this.userChanged = new Subject<User>();
   }
 
+  getCurrentUser(): User{
+    return this.currentUser;
+  }
+
   login(email: string, password: string): Observable<User> {
     const payload = { email, password };
     return this.http
